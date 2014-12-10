@@ -5,14 +5,12 @@ def service
 end
 
 def fog_test_server_attributes
-  # Hard coding numbers because requests from tests are sometimes failing.
-  # TODO: Mock properly instead
-  image = service.images.find { |i| i.name == 'Ubuntu 13.10 x64' }
-  image_id = image.nil? ? 1505447 : image.id
-  region = service.regions.find { |r| r.name == 'New York 1' }
-  region_id = region.nil? ? 4 : region.id
-  flavor = service.flavors.find { |r| r.name == '512MB' }
-  flavor_id = flavor.nil? ? 66 : flavor.id
+  image = service.images.find { |i| i.slug == 'ubuntu-14-04-x64' }
+  image_id = image.nil? ? 'ubuntu-14-04-x64' : image.id
+  region = service.regions.find { |r| r.id == 'NYC3' }
+  region_id = region.nil? ? 'NYC3' : region.id
+  flavor = service.flavors.find { |f| f.id == '512MB' }
+  flavor_id = flavor.nil? ? '512MB' : flavor.id
 
   {
     :image_id  => image_id,

@@ -38,8 +38,6 @@ module Fog
       request      :get_ssh_key
       request      :destroy_ssh_key
 
-      # request :digitalocean_resize
-
       class Mock
         def self.data
           @data ||= Hash.new do |hash, key|
@@ -55,25 +53,26 @@ module Fog
         end
 
         def initialize(options={})
-          @digitalocean_api_key = options[:digitalocean_api_key]
+          @digitalocean_oauth_token = options[:digitalocean_oauth_token]
         end
 
         def data
-          self.class.data[@digitalocean_api_key]
+          self.class.data[@digitalocean_oauth_token]
         end
 
         def reset_data
-          self.class.data.delete(@digitalocean_api_key)
+          self.class.data.delete(@digitalocean_oauth_token)
         end
       end
 
       class Real
         def initialize(options={})
-          @digitalocean_api_key   = options[:digitalocean_api_key]
-          @digitalocean_client_id = options[:digitalocean_client_id]
-          @digitalocean_api_url   = options[:digitalocean_api_url] || \
-                                            "https://api.digitalocean.com"
-          @connection             = Fog::XML::Connection.new(@digitalocean_api_url)
+          @digitalocean_oauth_token   = options[:digitalocean_oauth_token]
+          @digitalocean_api_version   = options[:digitalocean_api_version] || "v2"
+          @digitalocean_api_url       = options[:digitalocean_api_url] || \
+                                            "https://api.digitalocean.com/#{@digitalocean_api_version}"
+          Fog::Logger.deprecation("DigitalOcean API v1 is deprecated. Please upgrade to v2.") unless @digitalocean_api_version == "v2"
+          @connection                 = Fog::XML::Connection.new(@digitalocean_api_url)
         end
 
         def reload
@@ -81,9 +80,10 @@ module Fog
         end
 
         def request(params)
-          params[:query] ||= {}
-          params[:query].merge!(:api_key   => @digitalocean_api_key)
-          params[:query].merge!(:client_id => @digitalocean_client_id)
+          params[:headers] ||= {}
+          params[:headers].merge!({
+            'Authorization' => "Bearer #{Base64.encode64(@digitalocean_oauth_token).delete("\r\n")}"
+          })
 
           response = retry_event_lock { parse @connection.request(params) }
 

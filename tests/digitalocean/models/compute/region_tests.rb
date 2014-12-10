@@ -1,6 +1,6 @@
 Shindo.tests("Fog::Compute[:digitalocean] | region model", ['digitalocean', 'compute']) do
 
-  service = Fog::Compute[:digitalocean]
+  service = Fog::Compute[:digitalocean] # should use helper?
   region  = service.regions.first
 
   tests('The region model should') do

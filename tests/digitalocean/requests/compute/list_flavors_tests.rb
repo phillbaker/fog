@@ -1,6 +1,5 @@
 Shindo.tests('Fog::Compute[:digitalocean] | list_flavors request', ['digitalocean', 'compute']) do
 
-  # {"id":2,"name":"Amsterdam 1"}
   @flavor_format = {
     'id'           => Integer,
     'name'         => String,
@@ -9,6 +8,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | list_flavors request', ['digitalocea
   tests('success') do
 
     tests('#list_flavor') do
+      # should use helper?
       flavors = Fog::Compute[:digitalocean].list_flavors.body
       test 'returns a Hash' do
         flavors.is_a? Hash

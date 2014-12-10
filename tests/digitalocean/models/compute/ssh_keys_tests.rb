@@ -1,10 +1,10 @@
 Shindo.tests('Fog::Compute[:digitalocean] | ssh_keys collection', ['digitalocean']) do
 
-  service =  Fog::Compute[:digitalocean]
+  service =  Fog::Compute[:digitalocean] # should use helper?
 
   tests('The ssh_keys collection') do
     key = service.ssh_keys.create :name => 'fookey',
-                                  :ssh_pub_key => 'fookey'
+                                  :public_key => 'fookey'
     [:all, :get].each do |method|
       test("should respond to #{method}") do
         service.ssh_keys.respond_to? method

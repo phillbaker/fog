@@ -1,12 +1,12 @@
 Shindo.tests("Fog::Compute[:digitalocean] | ssh_key model", ['digitalocean', 'compute']) do
 
-  service = Fog::Compute[:digitalocean]
+  service = Fog::Compute[:digitalocean] # should use helper?
 
   tests('The ssh_key model should') do
 
     test('#save') do
       @key = service.ssh_keys.create :name => 'fookey',
-                                     :ssh_pub_key => 'fookey'
+                                     :public_key => 'fookey'
       @key.is_a? Fog::Compute::DigitalOcean::SshKey
     end
 
@@ -24,7 +24,7 @@ Shindo.tests("Fog::Compute[:digitalocean] | ssh_key model", ['digitalocean', 'co
       attributes = [
         :id,
         :name,
-        :ssh_pub_key
+        :public_key
       ]
 
       tests("The key model should respond to") do

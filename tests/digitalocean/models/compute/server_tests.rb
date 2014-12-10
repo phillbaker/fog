@@ -1,7 +1,5 @@
 Shindo.tests("Fog::Compute[:digitalocean] | server model", ['digitalocean', 'compute']) do
 
-  pending # See https://github.com/fog/fog/pull/3304
-
   server  = fog_test_server
 
   tests('The server model should') do
@@ -42,14 +40,14 @@ Shindo.tests("Fog::Compute[:digitalocean] | server model", ['digitalocean', 'com
     end
 
     test('#reboot') do
-      pending if Fog.mocking?
+      pending if Fog.mocking? # TODO
       server.reboot
       server.wait_for { server.state == 'off' }
       server.state == 'off'
     end
 
     test('#power_cycle') do
-      pending if Fog.mocking?
+      pending if Fog.mocking? # TODO
       server.wait_for { server.ready? }
       server.power_cycle
       server.wait_for { server.state == 'off' }
@@ -68,10 +66,7 @@ Shindo.tests("Fog::Compute[:digitalocean] | server model", ['digitalocean', 'com
       server.ready?
     end
 
-    # DigitalOcean shutdown is unreliable
-    # so disable it in real mode for now
     test('#shutdown') do
-      pending unless Fog.mocking?
       server.start
       server.wait_for { server.ready? }
       server.shutdown

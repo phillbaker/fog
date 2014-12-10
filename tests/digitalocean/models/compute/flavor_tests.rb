@@ -1,6 +1,6 @@
 Shindo.tests("Fog::Compute[:digitalocean] | flavor model", ['digitalocean', 'compute']) do
 
-  service = Fog::Compute[:digitalocean]
+  service = Fog::Compute[:digitalocean] # should use helper?
   flavor  = service.flavors.first
 
   tests('The flavor model should') do

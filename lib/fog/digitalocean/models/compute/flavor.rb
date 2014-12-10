@@ -4,8 +4,9 @@ module Fog
   module Compute
     class DigitalOcean
       class Flavor < Fog::Model
-        identity  :id
-        attribute :name
+        identity :id, :aliases => 'slug'
+        attribute :name, :aliases => 'slug'
+        attribute :slug
       end
     end
   end

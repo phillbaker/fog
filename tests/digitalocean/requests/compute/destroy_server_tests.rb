@@ -1,6 +1,6 @@
 Shindo.tests('Fog::Compute[:digitalocean] | destroy_server request', ['digitalocean', 'compute']) do
 
-  service = Fog::Compute[:digitalocean]
+  service = Fog::Compute[:digitalocean] # should use helper?
   server = fog_test_server
 
   tests('success') do

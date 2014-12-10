@@ -3,10 +3,10 @@ Shindo.tests('Fog::Compute[:digitalocean] | get_ssh_keys request', ['digitalocea
   @ssh_key_format = {
     'id'             => Integer,
     'name'           => String,
-    'ssh_pub_key'    => String,
+    'public_key'     => String,
   }
 
-  service = Fog::Compute[:digitalocean]
+  service = Fog::Compute[:digitalocean] # should use helper?
 
   tests('success') do
 

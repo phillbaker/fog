@@ -1,11 +1,10 @@
 Shindo.tests('Fog::Compute[:digitalocean] | get_server_details request', ['digitalocean', 'compute']) do
 
-  pending # See https://github.com/fog/fog/pull/3304
-
   tests('success') do
 
     test('#get_server_details') do
       server = fog_test_server
+      # should use helper?
       body = Fog::Compute[:digitalocean].get_server_details(server.id).body
       body['droplet']['name'] == fog_server_name
     end

@@ -4,28 +4,23 @@ module Fog
   module Compute
     class DigitalOcean
       # A DigitalOcean Droplet
-      #
       class Server < Fog::Compute::Server
         identity  :id
         attribute :name
         attribute :state, :aliases => 'status'
-        attribute :image_id
-        attribute :region_id
-        attribute :flavor_id, :aliases => 'size_id'
-        # Not documented in their API, but
-        # available nevertheless
-        attribute :public_ip_address, :aliases => 'ip_address'
-        attribute :private_ip_address
-        attribute :backups_active, :aliases => 'backups_enabled'
+        attribute :status
+        attribute :memory
+        attribute :vcpus
+        attribute :disk
+        attribute :locked
         attribute :created_at
 
-        attr_writer :ssh_keys
+        # TODO these now return json nested objects, so we can initiate the objects from the returned response
+        # attribute :image_id, :aliases => 'image'
+        # attribute :region_id, :aliases => 'region'
+        # attribute :flavor_id, :aliases => 'size'
 
-        # Deprecated: Use public_ip_address instead.
-        def ip_address
-          Fog::Logger.warning("ip_address has been deprecated. Use public_ip_address instead")
-          public_ip_address
-        end
+        attr_writer :ssh_keys
 
         # Reboot the server (soft reboot).
         #
@@ -105,18 +100,18 @@ module Fog
         #
         #   docean = Fog::Compute.new({
         #     :provider => 'DigitalOcean',
-        #     :digitalocean_api_key   => 'key-here',      # your API key here
-        #     :digitalocean_client_id => 'client-id-here' # your client key here
+        #     :digitalocean_oauth_token   => 'key-here'      # your OAuth token here
         #   })
         #   docean.servers.create :name => 'foobar',
-        #                     :image_id  => image_id_here,
-        #                     :flavor_id => flavor_id_here,
-        #                     :region_id => region_id_here
+        #                     :image_id  => image_id here,
+        #                     :flavor_id => flavor_id here,
+        #                     :region_id => region_id here
         #
         # @return [Boolean]
         def save
           raise Fog::Errors::Error.new('Resaving an existing object may create a duplicate') if persisted?
-          requires :name, :flavor_id, :image_id, :region_id
+          requires :name#, :flavor_id, :image_id, :region_id #TODO
+          flavor_id, image_id, region_id = attributes.values_at(:flavor_id, :image_id, :region_id)
 
           options = {}
           if attributes[:ssh_key_ids]
@@ -125,8 +120,8 @@ module Fog
             options[:ssh_key_ids] = @ssh_keys.map(&:id)
           end
 
-          options[:private_networking] = private_networking
-          options[:backups_active] =  backups_active
+          # options[:private_networking] = private_networking # TODO
+          # options[:backups_active] =  backups_active # TODO
 
           data = service.create_server name,
                                        flavor_id,
@@ -161,9 +156,7 @@ module Fog
 
         # Checks whether the server status is 'active'.
         #
-        # The server transitions from 'new' to 'active' sixty to ninety
-        # seconds after creating it (time varies and may take more
-        # than 90 secs).
+        # The server transitions from 'new' to 'active'.
         #
         # @return [Boolean]
         def ready?
@@ -174,24 +167,6 @@ module Fog
         def update
           msg = 'DigitalOcean servers do not support updates'
           raise NotImplementedError.new(msg)
-        end
-
-        # Helper method to get the flavor name
-        def flavor
-          requires :flavor_id
-          @flavor ||= service.flavors.get(flavor_id.to_i)
-        end
-
-        # Helper method to get the image name
-        def image
-          requires :image_id
-          @image ||= service.images.get(image_id.to_i)
-        end
-
-        # Helper method to get the region name
-        def region
-          requires :region_id
-          @region ||= service.regions.get(region_id.to_i)
         end
 
         # Helper method to get an array with all available IP addresses

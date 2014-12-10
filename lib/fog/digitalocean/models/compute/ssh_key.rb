@@ -5,12 +5,12 @@ module Fog
         identity :id
 
         attribute :name
-        attribute :ssh_pub_key
+        attribute :public_key
 
         def save
-          requires :name, :ssh_pub_key
+          requires :name, :public_key
 
-          merge_attributes(service.create_ssh_key(name, ssh_pub_key).body['ssh_key'])
+          merge_attributes(service.create_ssh_key(name, public_key).body['ssh_key'])
           true
         end
 

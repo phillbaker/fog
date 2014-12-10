@@ -15,6 +15,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | list_servers request', ['digitalocea
   tests('success') do
 
     tests('#list_servers') do
+      # should use helper?
       Fog::Compute[:digitalocean].list_servers.body['droplets'].each do |server|
         tests('format').data_matches_schema(@server_format) do
           server

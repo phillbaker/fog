@@ -8,7 +8,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | create_server request', ['digitaloce
     'event_id'       => Integer
   }
 
-  service = Fog::Compute[:digitalocean]
+  service = Fog::Compute[:digitalocean] # should use helper?
 
   tests('success') do
 
@@ -20,6 +20,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | create_server request', ['digitaloce
       flavor = service.flavors.find { |r| r.name == '512MB' }
       flavor_id = flavor.nil? ? 66 : flavor.id
 
+      # should use helper?
       data = Fog::Compute[:digitalocean].create_server(
         fog_server_name,
         flavor_id,

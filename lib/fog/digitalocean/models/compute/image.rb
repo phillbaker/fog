@@ -5,6 +5,7 @@ module Fog
     class DigitalOcean
       class Image < Fog::Model
         identity  :id
+        attribute :slug # May be null
         attribute :name
         attribute :distribution
       end
