@@ -1,7 +1,5 @@
 Shindo.tests("Fog::Compute[:digitalocean] | ssh_key model", ['digitalocean', 'compute']) do
 
-  service = Fog::Compute[:digitalocean] # should use helper?
-
   tests('The ssh_key model should') do
 
     test('#save') do

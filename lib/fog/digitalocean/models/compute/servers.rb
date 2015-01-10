@@ -15,15 +15,21 @@ module Fog
         def bootstrap(new_attributes = {})
           server = new(new_attributes)
 
+          new_attributes[:private_key_path] ||= Fog.credentials[:private_key_path]
+          new_attributes[:private_key]      ||= Fog.credentials[:private_key]
+          new_attributes[:public_key_path]  ||= Fog.credentials[:public_key_path]
+          new_attributes[:public_key]       ||= Fog.credentials[:public_key]
+
           check_keys(new_attributes)
 
+          # Check to see if we've already stored this key, otherwise create it
           credential = Fog.respond_to?(:credential) && Fog.credential || :default
           name       = "fog_#{credential}"
           ssh_key    = service.ssh_keys.find { |key| key.name == name }
           if ssh_key.nil?
             ssh_key = service.ssh_keys.create(
               :name        => name,
-              :ssh_pub_key => (new_attributes[:public_key] || File.read(new_attributes[:public_key_path]))
+              :public_key => (new_attributes[:public_key] || File.read(new_attributes[:public_key_path]))
             )
           end
           server.ssh_keys = [ssh_key]
@@ -56,7 +62,7 @@ module Fog
 
         def check_key(name, data, path)
           if [data, path].all?(&:nil?)
-            raise ArgumentError, "either #{name}_key or #{name}_key_path is required to configure the server"
+            raise ArgumentError, "either #{name}_key or #{name}_key_path is required to bootstrap the server"
           end
         end
       end

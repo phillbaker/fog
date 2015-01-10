@@ -1,6 +1,5 @@
 Shindo.tests("Fog::Compute[:digitalocean] | image model", ['digitalocean', 'compute']) do
 
-  service = Fog::Compute[:digitalocean] # should use helper?
   image  = service.images.first
 
   tests('The image model should') do

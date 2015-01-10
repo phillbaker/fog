@@ -1,7 +1,5 @@
 Shindo.tests('Fog::Compute[:digitalocean] | ssh_keys collection', ['digitalocean']) do
 
-  service =  Fog::Compute[:digitalocean] # should use helper?
-
   tests('The ssh_keys collection') do
     key = service.ssh_keys.create :name => 'fookey',
                                   :public_key => 'fookey'

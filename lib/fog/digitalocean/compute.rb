@@ -3,8 +3,7 @@ require 'fog/digitalocean/core'
 module Fog
   module Compute
     class DigitalOcean < Fog::Service
-      requires     :digitalocean_api_key
-      requires     :digitalocean_client_id
+      requires     :digitalocean_oauth_token
 
       recognizes   :digitalocean_api_url
 

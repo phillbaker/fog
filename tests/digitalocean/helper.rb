@@ -7,10 +7,10 @@ end
 def fog_test_server_attributes
   image = service.images.find { |i| i.slug == 'ubuntu-14-04-x64' }
   image_id = image.nil? ? 'ubuntu-14-04-x64' : image.id
-  region = service.regions.find { |r| r.id == 'NYC3' }
-  region_id = region.nil? ? 'NYC3' : region.id
-  flavor = service.flavors.find { |f| f.id == '512MB' }
-  flavor_id = flavor.nil? ? '512MB' : flavor.id
+  region = service.regions.find { |r| r.id == 'nyc3' }
+  region_id = region.nil? ? 'nyc3' : region.id
+  flavor = service.flavors.find { |f| f.id == '512mb' }
+  flavor_id = flavor.nil? ? '512mb' : flavor.id
 
   {
     :image_id  => image_id,
@@ -42,7 +42,7 @@ def fog_test_server_destroy
 end
 
 at_exit do
-  unless Fog.mocking? || Fog.credentials[:digitalocean_api_key].nil?
+  unless Fog.mocking? || Fog.credentials[:digitalocean_oauth_token].nil?
     server = service.servers.find { |s| s.name == fog_server_name }
     if server
       server.wait_for(120) do

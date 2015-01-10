@@ -4,6 +4,7 @@ module Fog
       class SshKey < Fog::Model
         identity :id
 
+        attribute :fingerprint
         attribute :name
         attribute :public_key
 
@@ -24,3 +25,5 @@ module Fog
     end
   end
 end
+
+

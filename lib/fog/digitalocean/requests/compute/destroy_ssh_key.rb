@@ -6,13 +6,11 @@ module Fog
         #
         # Delete a SSH public key from your account
         #
-        # @see https://developers.digitalocean.com/ssh-keys
-        #
         def destroy_ssh_key(id)
           request(
             :expects  => [200],
-            :method   => 'GET',
-            :path     => "ssh_keys/#{id}/destroy"
+            :method   => 'DELETE',
+            :path     => "account/keys/#{id}"
           )
         end
       end
@@ -20,12 +18,13 @@ module Fog
       class Mock
         def destroy_ssh_key(id)
           response = Excon::Response.new
-          response.status = 200
+
           if self.data[:ssh_keys].reject! { |k| k['id'] == id }
-            response.body = { "status" => "OK" }
+            response.status = 204
           else
-            response.body = { "status" => "ERROR" }
+            response.status = 404
           end
+
           response
         end
       end

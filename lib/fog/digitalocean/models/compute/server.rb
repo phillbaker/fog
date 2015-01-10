@@ -8,17 +8,12 @@ module Fog
         identity  :id
         attribute :name
         attribute :state, :aliases => 'status'
-        attribute :status
+        attribute :flavor, :aliases => 'size'
         attribute :memory
         attribute :vcpus
         attribute :disk
         attribute :locked
         attribute :created_at
-
-        # TODO these now return json nested objects, so we can initiate the objects from the returned response
-        # attribute :image_id, :aliases => 'image'
-        # attribute :region_id, :aliases => 'region'
-        # attribute :flavor_id, :aliases => 'size'
 
         attr_writer :ssh_keys
 
@@ -140,18 +135,58 @@ module Fog
         # Once the server has been destroyed, there's no way
         # to recover it so the data is irrecoverably lost.
         #
-        # IMPORTANT: As of 2013/01/31, you should wait some time to
-        # destroy the server after creating it. If you try to destroy
-        # the server too fast, the destroy event may be lost and the
-        # server will remain running and consuming resources, so
-        # DigitalOcean will keep charging you.
-        # Double checked this with DigitalOcean staff and confirmed
-        # that it's the way it works right now.
+        # IMPORTANT: As of 2013/01/31, the server must not be in the 'new'
+        # state when you try to issue the destroy. You should wait until the
+        # server is 'active' or 'off'. If you try to destroy the server too
+        # fast, the API call will return a non-200 response and the server
+        # will remain running and consuming resources, so DigitalOcean will
+        # keep charging you. Double checked this with DigitalOcean staff and
+        # confirmed that it's the way it works right now.
         #
         # Double check the server has been destroyed!
         def destroy
           requires :id
           service.destroy_server id
+        end
+
+        def backups_active
+          #TODO fetch from features array
+        end
+
+        def public_ip_address
+          #TODO fetch from networks array
+        end
+
+        def private_ip_address
+          #TODO fetch from networks array
+        end
+
+        def status
+          state
+        end
+
+        def flavor_id
+          flavor.id
+        end
+
+        def region_id
+          region.id
+        end
+
+        def image_id
+          image.id
+        end
+
+        def flavor
+          Fog::Compute::DigitalOcean::Region.new(attributes.flavor)
+        end
+
+        def region
+          Fog::Compute::DigitalOcean::Region.new(attributes.region)
+        end
+
+        def image
+          Fog::Compute::DigitalOcean::Region.new(attributes.image)
         end
 
         # Checks whether the server status is 'active'.
