@@ -23,7 +23,6 @@ module Fog
 
           response.body = {
             "event_id" => Fog::Mock.random_numbers(1).to_i,
-            "status" => "OK"
           }
           response
         end

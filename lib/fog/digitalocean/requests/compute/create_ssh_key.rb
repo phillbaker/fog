@@ -23,7 +23,6 @@ module Fog
             "public_key" => pub_key
           }
           response.body = {
-            "status" => "OK",
             "ssh_key"  => mock_data
           }
           self.data[:ssh_keys] << mock_data

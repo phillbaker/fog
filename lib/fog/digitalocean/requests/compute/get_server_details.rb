@@ -19,7 +19,6 @@ module Fog
           server = self.data[:servers].find { |s| s['id'] == server_id }
 
           response.body = {
-            "status" => "OK",
             "droplet"  => self.data[:servers].find { |s| s['id'] == server_id }
           }
 

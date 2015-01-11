@@ -16,7 +16,6 @@ module Fog
           response = Excon::Response.new
           response.status = 200
           response.body = {
-            "status" => "OK",
             "ssh_keys"  => [
               {
                 "id" => 512189,

@@ -16,7 +16,6 @@ module Fog
           response = Excon::Response.new
           response.status = 200
           response.body = {
-            "status" => "OK",
             "droplets"  => [
               {
                 "id" => 3164444,
@@ -40,9 +39,7 @@ module Fog
                 "backup_ids" => [
                   7938002
                 ],
-                "snapshot_ids" => [
-
-                ],
+                "snapshot_ids" => [],
                 "image" => {
                   "id" => 6918990,
                   "name" => "14.04 x64",

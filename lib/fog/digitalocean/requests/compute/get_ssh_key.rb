@@ -20,7 +20,6 @@ module Fog
           response = Excon::Response.new
           response.status = 200
           response.body = {
-            "status" => "OK",
             "ssh_key"  => self.data[:ssh_keys].find { |k| k['id'] == id }
           }
           response

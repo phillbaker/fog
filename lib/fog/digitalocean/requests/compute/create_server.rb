@@ -82,6 +82,7 @@ module Fog
               "version" => "3.13.0-37-generic"
             },
             "features" => [
+              # TODO
               # "virtio",
               # "private_networking",
               # "backups",
@@ -108,7 +109,6 @@ module Fog
           }
 
           response.body = {
-            "status" => "OK",
             "droplet"  => mock_data
           }
 
