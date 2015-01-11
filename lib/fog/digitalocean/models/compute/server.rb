@@ -8,7 +8,6 @@ module Fog
         identity  :id
         attribute :name
         attribute :state, :aliases => 'status'
-        attribute :flavor, :aliases => 'size'
         attribute :memory
         attribute :vcpus
         attribute :disk
@@ -154,11 +153,13 @@ module Fog
         end
 
         def public_ip_address
-          #TODO fetch from networks array
+          public_bridge = network_bridge('public')
+          public_bridge['ip_address'] if public_bridge
         end
 
         def private_ip_address
-          #TODO fetch from networks array
+          private_bridge = network_bridge('private')
+          private_bridge['ip_address'] if private_bridge
         end
 
         def status
@@ -178,15 +179,15 @@ module Fog
         end
 
         def flavor
-          Fog::Compute::DigitalOcean::Region.new(attributes.flavor)
+          Fog::Compute::DigitalOcean::Region.new(attributes['size'])
         end
 
         def region
-          Fog::Compute::DigitalOcean::Region.new(attributes.region)
+          Fog::Compute::DigitalOcean::Region.new(attributes['region'])
         end
 
         def image
-          Fog::Compute::DigitalOcean::Region.new(attributes.image)
+          Fog::Compute::DigitalOcean::Region.new(attributes['image'])
         end
 
         # Checks whether the server status is 'active'.
@@ -207,6 +208,13 @@ module Fog
         # Helper method to get an array with all available IP addresses
         def ip_addresses
           [public_ip_address, private_ip_address].flatten.select(&:present?)
+        end
+
+        protected
+
+        def network_bridge(type)
+          # require 'pry'; binding.pry
+          attributes['networks']['v4'].find { |n| n['type'] == 'public' }
         end
       end
     end
