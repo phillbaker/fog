@@ -15,6 +15,9 @@ module Fog
         def destroy_server( id )
           response = Excon::Response.new
           response.status = 204
+
+          self.data[:servers].reject! { |s| s['id'] == id }
+
           response
         end
       end

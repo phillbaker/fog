@@ -1,15 +1,14 @@
 Shindo.tests('Fog::Compute[:digitalocean] | list_regions request', ['digitalocean', 'compute']) do
 
   @region_format = {
-    'id'           => Integer,
+    'slug'         => String,
     'name'         => String,
   }
 
   tests('success') do
 
     tests('#list_regions') do
-      # should use helper?
-      regions = Fog::Compute[:digitalocean].list_regions.body
+      regions = service.list_regions.body
       test 'returns a Hash' do
         regions.is_a? Hash
       end

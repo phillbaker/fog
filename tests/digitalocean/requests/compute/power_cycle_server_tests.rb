@@ -6,7 +6,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | power_cycle_server request', ['digit
 
     tests('#power_cycle_server') do
       test('returns 200') do
-        service.power_cycle_server(server.id).status == 200
+        service.power_cycle_server(server.id).status == 201
       end
       test('state is off') do
         server.wait_for { server.state == 'off' }

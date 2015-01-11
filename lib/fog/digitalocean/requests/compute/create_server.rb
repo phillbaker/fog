@@ -26,7 +26,7 @@ module Fog
           query_hash[:user_data] = options[:user_data]
 
           request(
-            :expects  => [200],
+            :expects  => [202],
             :method   => 'POST',
             :path     => 'droplets',
             :query    => query_hash
@@ -41,7 +41,7 @@ module Fog
                            region_id,
                            options = {} )
           response = Excon::Response.new
-          response.status = 200
+          response.status = 202
 
           has_private_ip = !!options[:private_networking]
           # TODO other options: sshkeys, ipv6, backups, user data
@@ -67,9 +67,10 @@ module Fog
             "id" => Fog::Mock.random_numbers(1).to_i,
             "event_id" => Fog::Mock.random_numbers(2).to_i,
             "name" => name,
-            "size_id" => size_id,
-            "image_id" => image_id,
-            "region_id" => region_id,
+            "size_slug" => size_id,
+            # "size_id" =>
+            # "image_id" => image_id,
+            # "region_id" => region_id,
             "created_at" => Time.now.strftime("%FT%TZ"),
             "memory" => 512,
             "vcpus" => 1,
@@ -91,7 +92,27 @@ module Fog
             ],
             "backup_ids" => [],
             "snapshot_ids" => [],
-            "image" => {},
+            "image" => {
+              "id" => 6370882,
+              "name" => "20 x64",
+              "distribution" => "Fedora",
+              "slug" => "fedora-20-x64",
+              "public" => true,
+              "regions" => [
+                "nyc1",
+                "ams1",
+                "sfo1",
+                "nyc2",
+                "ams2",
+                "sgp1",
+                "lon1",
+                "nyc3",
+                "ams3",
+                "nyc3"
+              ],
+              "created_at" => "2014-09-26T15:29:01Z",
+              "min_disk_size" => 20
+            },
             "size" => "512mb",
             "networks" => {
               "v4" => bridges,
@@ -105,6 +126,27 @@ module Fog
               ]
             },
             "region" => {
+              "name" => "New York 3",
+              "slug" => "nyc3",
+              "sizes" => [
+                "32gb",
+                "16gb",
+                "2gb",
+                "1gb",
+                "4gb",
+                "8gb",
+                "512mb",
+                "64gb",
+                "48gb"
+              ],
+              "features" => [
+                "virtio",
+                "private_networking",
+                "backups",
+                "ipv6",
+                "metadata"
+              ],
+              "available" => true
             }
           }
 

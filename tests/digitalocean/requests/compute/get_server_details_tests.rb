@@ -4,8 +4,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | get_server_details request', ['digit
 
     test('#get_server_details') do
       server = fog_test_server
-      # should use helper?
-      body = Fog::Compute[:digitalocean].get_server_details(server.id).body
+      body = service.get_server_details(server.id).body
       body['droplet']['name'] == fog_server_name
     end
 

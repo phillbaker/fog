@@ -10,8 +10,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | list_images request', ['digitalocean
   tests('success') do
 
     tests('#list_images') do
-      # should use helper?
-      images = Fog::Compute[:digitalocean].list_images.body
+      images = service.list_images.body
       test 'returns a Hash' do
         images.is_a? Hash
       end

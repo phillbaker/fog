@@ -4,7 +4,7 @@ module Fog
       class Real
         def create_ssh_key( name, pub_key )
           request(
-            :expects  => [200],
+            :expects  => [201],
             :method   => 'POST',
             :path     => 'account/keys',
             :query    => { 'name' => name, 'public_key' => pub_key }
@@ -15,7 +15,7 @@ module Fog
       class Mock
         def create_ssh_key( name, pub_key )
           response = Excon::Response.new
-          response.status = 200
+          response.status = 201
           mock_data = {
             "id" => Fog::Mock.random_numbers(1).to_i,
             "name" => name,

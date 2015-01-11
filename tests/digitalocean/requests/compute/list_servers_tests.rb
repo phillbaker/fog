@@ -3,11 +3,11 @@ Shindo.tests('Fog::Compute[:digitalocean] | list_servers request', ['digitalocea
   @server_format = {
     'id'             => Integer,
     'name'           => String,
-    'image_id'       => Integer,
-    'size_id'        => Integer,
-    'region_id'      => Integer,
-    'backups_active' => Fog::Nullable::Boolean,
-    'ip_address'     => Fog::Nullable::String,
+    'size_slug'      => String,
+    'image'          => Hash,
+    'region'         => Hash,
+    'features'       => Array,
+    'networks'       => Hash,
     'status'         => String,
     'created_at'     => String
   }
@@ -15,8 +15,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | list_servers request', ['digitalocea
   tests('success') do
 
     tests('#list_servers') do
-      # should use helper?
-      Fog::Compute[:digitalocean].list_servers.body['droplets'].each do |server|
+      service.list_servers.body['droplets'].each do |server|
         tests('format').data_matches_schema(@server_format) do
           server
         end

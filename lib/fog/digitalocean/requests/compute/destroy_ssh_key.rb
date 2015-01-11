@@ -1,4 +1,3 @@
-# TODO
 module Fog
   module Compute
     class DigitalOcean
@@ -8,7 +7,7 @@ module Fog
         #
         def destroy_ssh_key(id)
           request(
-            :expects  => [200],
+            :expects  => [204],
             :method   => 'DELETE',
             :path     => "account/keys/#{id}"
           )

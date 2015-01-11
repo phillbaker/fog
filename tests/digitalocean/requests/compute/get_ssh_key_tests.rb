@@ -6,8 +6,6 @@ Shindo.tests('Fog::Compute[:digitalocean] | get_ssh_keys request', ['digitalocea
     'public_key'     => String,
   }
 
-  service = Fog::Compute[:digitalocean] # should use helper?
-
   tests('success') do
 
     tests('#get_ssh_key') do
