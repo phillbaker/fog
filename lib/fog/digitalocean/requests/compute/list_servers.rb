@@ -3,6 +3,7 @@ module Fog
     class DigitalOcean
       class Real
         def list_servers(options = {})
+          # TODO pagination
           request(
             :expects  => [200],
             :method   => 'GET',

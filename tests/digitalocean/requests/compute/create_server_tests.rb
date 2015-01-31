@@ -4,7 +4,6 @@ Shindo.tests('Fog::Compute[:digitalocean] | create_server request', ['digitaloce
     'id'             => Integer,
     'name'           => String,
     'size_slug'      => String,
-    'event_id'       => Integer,
     'image'          => Hash, # Nested objects
     'region'         => Hash
   }

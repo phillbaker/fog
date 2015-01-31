@@ -7,7 +7,7 @@ Shindo.tests('Fog::Compute[:digitalocean] | list_ssh_keys request', ['digitaloce
 
   tests('success') do
 
-    ssh_key = service.create_ssh_key 'fookey', 'ssh-dss FOO'
+    ssh_key = service.create_ssh_key('fookey', ssh_public_key)
 
     tests('#list_ssh_keys') do
       service.list_ssh_keys.body['ssh_keys'].each do |key|

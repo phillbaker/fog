@@ -2,11 +2,11 @@ module Fog
   module Compute
     class DigitalOcean
       class Real
-        def create_server( name,
-                           size_id,
-                           image_id,
-                           region_id,
-                           options = {} )
+        def create_server(name,
+                          size_id,
+                          image_id,
+                          region_id,
+                          options = {})
 
           query_hash = {
             :name        => name,
@@ -25,21 +25,22 @@ module Fog
           query_hash[:backups] = !!options[:backups_active]
           query_hash[:user_data] = options[:user_data]
 
+          # TODO this should be done posting JSON, maybe in the body?
           request(
             :expects  => [202],
             :method   => 'POST',
             :path     => 'droplets',
-            :query    => query_hash
+            :body     => query_hash.to_json
           )
         end
       end
 
       class Mock
-        def create_server( name,
-                           size_id,
-                           image_id,
-                           region_id,
-                           options = {} )
+        def create_server(name,
+                          size_id,
+                          image_id,
+                          region_id,
+                          options = {})
           response = Excon::Response.new
           response.status = 202
 
@@ -65,7 +66,6 @@ module Fog
 
           mock_data = {
             "id" => Fog::Mock.random_numbers(1).to_i,
-            "event_id" => Fog::Mock.random_numbers(2).to_i,
             "name" => name,
             "size_slug" => size_id,
             # "size_id" =>
@@ -75,7 +75,7 @@ module Fog
             "memory" => 512,
             "vcpus" => 1,
             "disk" => 20,
-            "locked" => true,
+            "locked" => false,
             "status" => "active",
             "kernel" => {
               "id" => 2233,
@@ -151,7 +151,7 @@ module Fog
           }
 
           response.body = {
-            "droplet"  => mock_data
+            "droplet"  => mock_data,
           }
 
           self.data[:servers] << mock_data

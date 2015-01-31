@@ -3,13 +3,13 @@ Shindo.tests('Fog::Compute[:digitalocean] | create_ssh_key request', ['digitaloc
   @key_format = {
     'id'             => Integer,
     'name'           => String,
-    'public_key'    => String
+    'public_key'     => String
   }
 
   tests('success') do
 
     tests('#create_ssh_key').formats('ssh_key' => @key_format) do
-      @key = service.create_ssh_key 'fookey', 'fookey'
+      @key = service.create_ssh_key('fookey', ssh_public_key)
       @key.body
     end
 

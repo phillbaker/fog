@@ -190,12 +190,13 @@ module Fog
           Fog::Compute::DigitalOcean::Region.new(attributes['image'])
         end
 
-        # Checks whether the server status is 'active'.
+        # Checks whether the server status is 'active' and there are any pending events.
         #
-        # The server transitions from 'new' to 'active'.
+        # The server transitions from 'new' to 'active' on create.
         #
         # @return [Boolean]
         def ready?
+          Fog::Logger.warning("[DigitalOcean] #{attributes['name']} (#{attributes['id']}) ready?")
           state == 'active'
         end
 

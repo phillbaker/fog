@@ -32,5 +32,5 @@ digitalocean:
 Run:
 
 ```
-FOG_CREDENTIAL=digitalocean FOG_MOCK=true bundle exec shindont tests/digitalocean
+FOG_CREDENTIAL=digitalocean bundle exec shindont tests/digitalocean
 ```

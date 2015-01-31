@@ -3,8 +3,12 @@ Shindo.tests("Fog::Compute[:digitalocean] | ssh_key model", ['digitalocean', 'co
   tests('The ssh_key model should') do
 
     test('#save') do
-      @key = service.ssh_keys.create :name => 'fookey',
-                                     :public_key => 'fookey'
+      options = {
+        :name => 'fookey',
+        :public_key => ssh_public_key
+      }
+
+      @key = service.ssh_keys.create(options)
       @key.is_a? Fog::Compute::DigitalOcean::SshKey
     end
 

@@ -8,9 +8,5 @@ Shindo.tests('Fog::Compute[:digitalocean] | destroy_server request', ['digitaloc
       service.destroy_server(server.id).status == 204
     end
 
-    test('#destroy_server') do
-      service.servers.get(server.id) == nil
-    end
-
   end
 end

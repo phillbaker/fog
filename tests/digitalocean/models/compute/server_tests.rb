@@ -39,38 +39,39 @@ Shindo.tests("Fog::Compute[:digitalocean] | server model", ['digitalocean', 'com
       end
     end
 
+    # Test server power commands. Rebooting a Droplet in quick succession can
+    # throw off its ACPI state, so we destroy and recreate midway through.
+
     test('#reboot') do
-      pending if Fog.mocking? # TODO
       server.reboot
-      server.wait_for { server.state == 'off' }
-      server.state == 'off'
+      server.wait_for { !server.locked }
+      server.state == 'active'
     end
 
     test('#power_cycle') do
-      pending if Fog.mocking? # TODO
-      server.wait_for { server.ready? }
       server.power_cycle
-      server.wait_for { server.state == 'off' }
-      server.state == 'off'
+      server.wait_for { !server.locked }
+      server.state == 'active'
     end
+
+    server.destroy
+    server = fog_test_server
 
     test('#stop') do
       server.stop
-      server.wait_for { server.state == 'off' }
+      server.wait_for { !server.locked }
       server.state == 'off'
     end
 
     test('#start') do
       server.start
-      server.wait_for { ready? }
+      server.wait_for { !server.locked }
       server.ready?
     end
 
     test('#shutdown') do
-      server.start
-      server.wait_for { server.ready? }
       server.shutdown
-      server.wait_for { server.state == 'off' }
+      server.wait_for { !server.locked }
       server.state == 'off'
     end
 
@@ -84,7 +85,7 @@ Shindo.tests("Fog::Compute[:digitalocean] | server model", ['digitalocean', 'com
   end
 
   # restore server state
-  server.start
-  server.wait_for { ready? }
+  server.start if !server.ready?
+  server.wait_for { ready? && !server.locked }
 
 end

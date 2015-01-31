@@ -2,9 +2,9 @@ module Fog
   module Compute
     class DigitalOcean
       class Real
-        def shutdown_server( id )
+        def shutdown_server(id)
           request(
-            :expects  => [201],
+            :expects  => [201, DigitalOcean::LOCKED_RESPONSE_CODE],
             :method   => 'POST',
             :path     => "droplets/#{id}/actions",
             :query    => { "type" => "shutdown" }
@@ -13,12 +13,12 @@ module Fog
       end
 
       class Mock
-        def shutdown_server( id )
+        def shutdown_server(id)
           response = Excon::Response.new
           response.status = 201
           server = self.data[:servers].find { |s| s['id'] == id }
 
-          # Simulate reboot
+          # Simulate shutdown
           server['status'] = 'off' if server
 
           response.body = {

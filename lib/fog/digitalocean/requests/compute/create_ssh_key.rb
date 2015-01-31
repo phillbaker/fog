@@ -2,7 +2,7 @@ module Fog
   module Compute
     class DigitalOcean
       class Real
-        def create_ssh_key( name, pub_key )
+        def create_ssh_key(name, pub_key)
           request(
             :expects  => [201],
             :method   => 'POST',

@@ -1,8 +1,12 @@
 Shindo.tests('Fog::Compute[:digitalocean] | ssh_keys collection', ['digitalocean']) do
 
   tests('The ssh_keys collection') do
-    key = service.ssh_keys.create :name => 'fookey',
-                                  :public_key => 'fookey'
+    options = {
+      :name => 'fookey',
+      :public_key => ssh_public_key
+    }
+
+    key = service.ssh_keys.create(options)
     [:all, :get].each do |method|
       test("should respond to #{method}") do
         service.ssh_keys.respond_to? method

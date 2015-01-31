@@ -2,9 +2,9 @@ module Fog
   module Compute
     class DigitalOcean
       class Real
-        def power_off_server( id )
+        def power_off_server(id)
           request(
-            :expects  => [201],
+            :expects  => [201, DigitalOcean::LOCKED_RESPONSE_CODE],
             :method   => 'POST',
             :path     => "droplets/#{id}/actions",
             :query    => { "type" => "power_off" }
@@ -13,7 +13,7 @@ module Fog
       end
 
       class Mock
-        def power_off_server( id )
+        def power_off_server(id)
           response = Excon::Response.new
           response.status = 201
           server = self.data[:servers].find { |s| s['id'] }

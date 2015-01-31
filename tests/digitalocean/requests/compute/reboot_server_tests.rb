@@ -10,5 +10,4 @@ Shindo.tests('Fog::Compute[:digitalocean] | reboot_server request', ['digitaloce
 
   end
 
-
 end
